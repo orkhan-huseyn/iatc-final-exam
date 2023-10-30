@@ -45,6 +45,22 @@ async function updateProduct(req, res) {
   }
 }
 
+async function listProducts(req, res) {}
+
+/**
+ * Get single product by ID
+ * @param {express.Request} req
+ * @param {express.Response} res
+ */
+async function getProduct(req, res) {}
+
+/**
+ * Deletes a product by ID
+ * @param {express.Request} req
+ * @param {express.Response} res
+ */
+async function deleteProduct(req, res) {}
+
 // Implement the logic for listProducts, getProduct, and deleteProduct functions similarly.
 
 module.exports = {

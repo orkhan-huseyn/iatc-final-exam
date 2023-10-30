@@ -18,7 +18,7 @@ const updatedTestProduct = {
   stockCount: 300,
 };
 
-test('creating a product', async ({ request }) => {
+test('creating a products', async ({ request }) => {
   const response = await request.post('/api/v1/products', {
     headers: contentTypeHeaders,
     data: testProduct,
@@ -35,7 +35,7 @@ test('creating a product', async ({ request }) => {
   expect(responseBody.stockCount).toBe(testProduct.stockCount);
 });
 
-test('getting single post', async ({ request }) => {
+test('getting single products', async ({ request }) => {
   let response = await request.post('/api/v1/products', {
     headers: contentTypeHeaders,
     data: testProduct,
@@ -59,7 +59,7 @@ test('getting single post', async ({ request }) => {
   expect(responseBody.stockCount).toBe(testProduct.stockCount);
 });
 
-test('updating a post', async ({ request }) => {
+test('updating a products', async ({ request }) => {
   let response = await request.post('/api/v1/products', {
     headers: contentTypeHeaders,
     data: testProduct,
@@ -86,17 +86,18 @@ test('updating a post', async ({ request }) => {
   expect(responseBody.stockCount).toBe(updatedTestProduct.stockCount);
 });
 
-test('getting list of posts', async ({ request }) => {
+test('getting list of products', async ({ request }) => {
   const response = await request.get('/api/v1/products');
   expect(response.ok()).toBeTruthy();
   expect(response.status()).toBe(200);
 
   const rawResponseBody = await response.body();
   const responseBody = JSON.parse(rawResponseBody.toString());
-  expect(responseBody).toHaveLength(expect.any(Number));
+  expect(Array.isArray(responseBody)).toBeTruthy();
+  expect(responseBody.length).toBe(expect.any(Number));
 });
 
-test('deleting a post', async ({ request }) => {
+test('deleting a products', async ({ request }) => {
   let response = await request.post('/api/v1/products', {
     headers: contentTypeHeaders,
     data: testProduct,

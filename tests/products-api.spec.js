@@ -94,7 +94,6 @@ test('getting list of products', async ({ request }) => {
   const rawResponseBody = await response.body();
   const responseBody = JSON.parse(rawResponseBody.toString());
   expect(Array.isArray(responseBody)).toBeTruthy();
-  expect(responseBody.length).toBe(expect.any(Number));
 });
 
 test('deleting a products', async ({ request }) => {

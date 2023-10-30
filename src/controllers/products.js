@@ -2,8 +2,13 @@ const Product = require('../models/product');
 
 async function createProduct(req, res) {
   try {
-    const { name, price } = req.body;
-    const product = await Product.create({ name, price });
+    const { title, description, price, stockCount } = req.body;
+    const product = await Product.create({
+      title,
+      description,
+      price,
+      stockCount,
+    });
     res.status(201).json(product);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -36,10 +41,10 @@ async function getProduct(req, res) {
 async function updateProduct(req, res) {
   try {
     const id = req.params.id;
-    const { name, price } = req.body;
+    const { title, description, price, stockCount } = req.body;
     const product = await Product.findByPk(id);
     if (product) {
-      await product.update({ name, price });
+      await product.update({ title, description, price, stockCount });
       res.json(product);
     } else {
       res.status(404).json({ message: 'Product not found' });

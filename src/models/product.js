@@ -1,4 +1,4 @@
-const { Sequelize, DataTypes } = require('sequelize');
+const {DataTypes} = require('sequelize');
 const sequelize = require('../lib/sequelize');
 
 const Product = sequelize.define('Product', {
@@ -15,6 +15,7 @@ const Product = sequelize.define('Product', {
     type: DataTypes.STRING,
   },
   price: {
+    // eslint-disable-next-line
     type: DataTypes.DECIMAL(10, 2),
     allowNull: false,
   },

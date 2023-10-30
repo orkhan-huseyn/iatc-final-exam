@@ -8,9 +8,10 @@ const Product = require('../models/product');
 async function createProduct(req, res) {
   try {
     const product = await Product.create(req.body);
-    res.json(product);
+    res.status(201).json(product);
   } catch (error) {
-    res.status(500).json({ error: 'Error creating the product' });
+    console.error(error);
+    res.status(500).json({error: 'Internal Server Error'});
   }
 }
 
@@ -24,12 +25,12 @@ async function updateProduct(req, res) {
   try {
     const product = await Product.findByPk(productId);
     if (!product) {
-      return res.status(404).json({ error: 'Product not found' });
+      return res.status(404).json({error: 'Product not found'});
     }
     await product.update(req.body);
     res.json(product);
   } catch (error) {
-    res.status(500).json({ error: 'Error updating the product' });
+    res.status(500).json({error: 'Error updating the product'});
   }
 }
 
@@ -43,7 +44,7 @@ async function listProducts(req, res) {
     const products = await Product.findAll();
     res.json(products);
   } catch (error) {
-    res.status(500).json({ error: 'Error retrieving products' });
+    res.status(500).json({error: 'Error retrieving products'});
   }
 }
 
@@ -57,11 +58,11 @@ async function getProduct(req, res) {
   try {
     const product = await Product.findByPk(productId);
     if (!product) {
-      return res.status(404).json({ error: 'Product not found' });
+      return res.status(404).json({error: 'Product not found'});
     }
     res.json(product);
   } catch (error) {
-    res.status(500).json({ error: 'Error retrieving the product' });
+    res.status(500).json({error: 'Error retrieving the product'});
   }
 }
 
@@ -75,12 +76,12 @@ async function deleteProduct(req, res) {
   try {
     const product = await Product.findByPk(productId);
     if (!product) {
-      return res.status(404).json({ error: 'Product not found' });
+      return res.status(404).json({error: 'Product not found'});
     }
     await product.destroy();
     res.status(204).end(); // No content, successful deletion
   } catch (error) {
-    res.status(500).json({ error: 'Error deleting the product' });
+    res.status(500).json({error: 'Error deleting the product'});
   }
 }
 

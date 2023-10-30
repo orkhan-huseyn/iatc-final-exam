@@ -1,27 +1,50 @@
-/**
- * @typedef {import('express').Request} express.Request
- * @typedef {import('express').Response} express.Response
- */
+const Product = require('../models/product');
 
-/**
- * Creates a product in database
- * @param {express.Request} req
- * @param {express.Response} res
- */
-async function createProduct(req, res) {}
+async function createProduct(req, res) {
+  try {
+    // Extract product data from the request body
+    const { name, price, description } = req.body;
 
-/**
- * Updates a product by ID in database
- * @param {express.Request} req
- * @param {express.Response} res
- */
-async function updateProduct(req, res) {}
+    // Create a new product in the database
+    const product = await Product.create({ name, price, description });
 
-/**
- * Lists all products in database
- * @param {express.Request} req
- * @param {express.Response} res
- */
+    // Return the newly created product in the response
+    res.status(201).json(product);
+  } catch (error) {
+    // Handle any errors that occur during product creation
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
+
+async function updateProduct(req, res) {
+  try {
+    // Extract product data from the request body
+    const { name, price, description } = req.body;
+    const productId = req.params.id; // Assuming the product ID is in the request parameters
+
+    // Find the product by its ID
+    const product = await Product.findByPk(productId);
+
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+
+    // Update the product with the new data
+    product.name = name;
+    product.price = price;
+    product.description = description;
+
+    // Save the updated product
+    await product.save();
+
+    // Return the updated product in the response
+    res.json(product);
+  } catch (error) {
+    // Handle any errors that occur during product update
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
+
 async function listProducts(req, res) {}
 
 /**
@@ -37,6 +60,8 @@ async function getProduct(req, res) {}
  * @param {express.Response} res
  */
 async function deleteProduct(req, res) {}
+
+// Implement the logic for listProducts, getProduct, and deleteProduct functions similarly.
 
 module.exports = {
   createProduct,

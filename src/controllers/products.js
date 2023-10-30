@@ -1,47 +1,78 @@
-/**
- * @typedef {import('express').Request} express.Request
- * @typedef {import('express').Response} express.Response
- */
+const Product = require('../models/product');
 
-/**
- * Creates a product in database
- * @param {express.Request} req
- * @param {express.Response} res
- */
-async function createProduct(req, res) {}
+async function createProduct(req, res) {
+  try {
+    const { title, description, price, stockCount } = req.body;
+    const product = await Product.create({
+      title,
+      description,
+      price,
+      stockCount,
+    });
+    res.status(201).json(product);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+}
 
-/**
- * Updates a product by ID in database
- * @param {express.Request} req
- * @param {express.Response} res
- */
-async function updateProduct(req, res) {}
+async function listProducts(req, res) {
+  try {
+    const products = await Product.findAll();
+    res.json(products);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+}
 
-/**
- * Lists all products in database
- * @param {express.Request} req
- * @param {express.Response} res
- */
-async function listProducts(req, res) {}
+async function getProduct(req, res) {
+  try {
+    const id = req.params.id;
+    const product = await Product.findByPk(id);
+    if (product) {
+      res.json(product);
+    } else {
+      res.status(404).json({ message: 'Product not found' });
+    }
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+}
 
-/**
- * Get single product by ID
- * @param {express.Request} req
- * @param {express.Response} res
- */
-async function getProduct(req, res) {}
+async function updateProduct(req, res) {
+  try {
+    const id = req.params.id;
+    const { title, description, price, stockCount } = req.body;
+    const product = await Product.findByPk(id);
+    if (product) {
+      await product.update({ title, description, price, stockCount });
+      res.json(product);
+    } else {
+      res.status(404).json({ message: 'Product not found' });
+    }
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+}
 
-/**
- * Deletes a product by ID
- * @param {express.Request} req
- * @param {express.Response} res
- */
-async function deleteProduct(req, res) {}
+async function deleteProduct(req, res) {
+  try {
+    const id = req.params.id;
+    const product = await Product.findByPk(id);
+    if (product) {
+      await product.destroy();
+      res.status(204).json({ message: 'Product deleted' });
+    } else {
+      res.status(404).json({ message: 'Product not found' });
+    }
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+}
 
 module.exports = {
   createProduct,
-  updateProduct,
   listProducts,
   getProduct,
+  updateProduct,
   deleteProduct,
 };

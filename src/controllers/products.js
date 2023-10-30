@@ -60,7 +60,7 @@ async function deleteProduct(req, res) {
     const product = await Product.findByPk(id);
     if (product) {
       await product.destroy();
-      res.json({ message: 'Product deleted' });
+      res.status(204).json({ message: 'Product deleted' });
     } else {
       res.status(404).json({ message: 'Product not found' });
     }

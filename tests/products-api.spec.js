@@ -1,6 +1,4 @@
 const { test, expect } = require('@playwright/test');
-const fs = require('fs/promises');
-const path = require('path');
 
 const contentTypeHeaders = {
   'Content-Type': 'application/json',
@@ -19,13 +17,6 @@ const updatedTestProduct = {
   price: 2800,
   stockCount: 300,
 };
-
-test.beforeAll(async () => {
-  try {
-    const databasePath = path.resolve(process.env.DATABASE_PATH);
-    await fs.unlink(databasePath);
-  } catch {}
-});
 
 test('creating a product', async ({ request }) => {
   const response = await request.post('/api/v1/products', {
